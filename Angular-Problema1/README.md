@@ -1,6 +1,6 @@
 # Angular Problema1
 # To-Do List en Angular
-![Problema 1 -Angular To-do-List](./img/problema1-angular.png)
+![Problema 1 -Angular To-do-List](/img/problema1-angular.png)
 Este proyecto es una aplicación de lista de tareas (To-Do List) desarrollada en Angular. A continuación, se documentan los pasos realizados para la creación de la misma.
 
 ## 1. Generación del Servicio
