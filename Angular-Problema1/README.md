@@ -1,27 +1,65 @@
-# AngularProblema1
+# Angular Problema1
+Como lo resolvi 
+# To-Do List en Angular
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.6.
+Este proyecto es una aplicación de lista de tareas (To-Do List) desarrollada en Angular. A continuación, se documentan los pasos realizados para la creación de la misma.
 
-## Development server
+## 1. Generación del Servicio
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+El primer paso fue generar un servicio utilizando Angular CLI. Este servicio maneja la lógica relacionada con las tareas, como agregar, eliminar y actualizar tareas.
 
-## Code scaffolding
+### Comando utilizado:
+ng generate service tarea 
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-## Build
+Este comando generó un archivo `tarea.service.ts`, donde se encapsuló toda la lógica de la aplicación. El servicio fue inyectado en la raíz de la aplicación (`providedIn: 'root'`), permitiendo que pueda ser utilizado en cualquier parte del proyecto.
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Métodos implementados en el servicio:
 
-## Running unit tests
+- **`obtenerTareas()`**: Devuelve el arreglo de tareas que se almacena de manera privada en el servicio.
+  
+- **`agregarTarea(tarea: string)`**: Añade una nueva tarea al arreglo de tareas.
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **`eliminarTarea(index: number)`**: Elimina una tarea del arreglo con base en su índice.
 
-## Running end-to-end tests
+- **`actualizarTarea(index: number, nuevaTarea: string)`**: Actualiza una tarea existente en el arreglo, sustituyéndola por una nueva tarea.
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+## 2. Creación del Componente Principal
 
-## Further help
+El componente principal de la aplicación (`AppComponent`) fue diseñado para interactuar con el `TareaService`, permitiendo al usuario gestionar las tareas a través de la interfaz de usuario.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+### Inicialización del Componente:
+
+- **Inyección del servicio**: Se inyectó el servicio `TareaService` dentro del componente para acceder a los métodos de manejo de tareas.
+  
+- **Método `ngOnInit()`**: Durante la inicialización del componente, se obtuvieron las tareas almacenadas en el servicio mediante el método `obtenerTareas()`.
+
+### Funcionalidad Implementada:
+
+- **Agregar Tarea**: Se añadió un método `agregarTarea()` que permite agregar nuevas tareas a la lista, verificando que no esté vacía antes de agregarla al servicio.
+
+- **Eliminar Tarea**: El método `eliminarTarea()` permite eliminar una tarea específica utilizando su índice en la lista.
+
+- **Actualizar Tarea**: Se añadió la funcionalidad de actualización mediante el método `actualizarTarea()`, el cual utiliza un `prompt` para capturar la nueva versión de la tarea seleccionada.
+
+## 3. Estructura HTML y Enlace de Datos
+
+La interfaz de usuario fue construida utilizando el lenguaje de plantillas de Angular. Se utilizó `ngModel` para enlazar la nueva tarea ingresada en el formulario con el componente y `ngFor` para iterar sobre las tareas existentes y mostrarlas en la lista.
+
+### Elementos Clave:
+
+- **Formulario**: Se creó un formulario simple que contiene un `input` para ingresar la nueva tarea y un botón para agregarla.
+
+- **Lista de Tareas**: La lista de tareas fue generada dinámicamente utilizando `*ngFor`. Cada tarea tiene opciones para ser actualizada o eliminada, utilizando su índice para identificarla en el arreglo.
+
+## 4. Estilización
+
+Se aplicaron estilos CSS al formulario y a la lista de tareas para mejorar la presentación de la aplicación, asegurando una interfaz limpia y funcional. Se utilizaron clases personalizadas para botones y elementos de la lista.
+
+## 5. Importaciones Necesarias
+
+Para habilitar el uso de formularios en Angular, se incluyó el módulo `FormsModule` en la configuración del componente. Esto permitió utilizar la directiva `ngModel` para el enlace de datos bidireccional.
+
+```typescript
+imports: [FormsModule]
+ 
