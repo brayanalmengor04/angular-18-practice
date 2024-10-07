@@ -1,0 +1,74 @@
+<div class="container" [ngClass]="{'dark-mode': isDarkMode}">
+  <h2>Currency Converter</h2>
+
+  <!-- <div class="toggle-dark-mode">
+    <button class="toggle-button" (click)="toggleDarkMode()">
+      {{ isDarkMode ? '🌙 Dark Mode' : '☀️ Light Mode' }} 
+       Segun lo que presione va cambiar el estado (true or false)
+    </button>
+  </div> 
+--> 
+  <div class="toggle-dark-mode">
+    <label class="switch">
+      <input type="checkbox" (change)="toggleDarkMode()" [checked]="isDarkMode">
+      <span class="slider"></span>
+    </label>
+    <span class="mode-text">{{ isDarkMode ? '🌙 Mode' : '☀️ Mode' }}</span>
+  </div>
+
+  <div class="form-group">
+    <label for="amount">Amount</label>
+    <input
+      type="number"
+      id="amount"
+      [(ngModel)]="amount" 
+      (ngModelChange)="convertCurrency()"  
+      class="form-control"
+    />
+
+    <!-- Obtengo en amount el valor del input y el ngModelChange setearea los datos (detecta si hay un cambio en el input)
+     -->
+  </div>
+
+  <div class="form-group">
+    <label for="fromCurrency">From</label>
+    <select
+      id="fromCurrency"
+      [(ngModel)]="fromCurrency"
+      (change)="onCurrencyChange()"
+      class="form-control"
+    >
+    <option value="USD">Dolares Estado Unidense</option>
+  <option value="EUR">Euros</option>
+<option value="GBP">GBP</option>
+<option value="JPY">JPY</option>
+<option value="MXN">Pesos Mexicanos (MXN)</option>
+<option value="COP">Pesos Colombianos (COP)</option>
+<option value="PEN">Soles Peruanos (PEN)</option>
+      
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label for="toCurrency">To</label>
+    <select
+      id="toCurrency"
+      [(ngModel)]="toCurrency"
+      (ngModelChange)="convertCurrency()"
+      class="form-control"
+    >
+    <option value="USD">Dolares Estado Unidense</option>
+    <option value="EUR">Euros</option>
+  <option value="GBP">GBP</option>
+  <option value="JPY">JPY</option>
+  <option value="MXN">Pesos Mexicanos (MXN)</option>
+  <option value="COP">Pesos Colombianos (COP)</option>
+  <option value="PEN">Soles Peruanos (PEN)</option>
+  
+    </select>
+  </div>
+
+  <div class="result">
+    <p>{{ amount }} {{ fromCurrency }} = {{ result }} {{ toCurrency }}</p>
+  </div>
+</div>

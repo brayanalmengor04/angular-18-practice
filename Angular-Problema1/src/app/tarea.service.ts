@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
 // Esto es un archivo de servicio aqui puedo serparar la logica de programacion-------------
 @Injectable({
   providedIn: 'root'
@@ -27,8 +26,5 @@ export class TareaService {
   actualizarTarea(index:number ,nuevaTarea:string):void{
       this.tareas[index] = nuevaTarea;
   }
-
   constructor() { } 
-
-
 }

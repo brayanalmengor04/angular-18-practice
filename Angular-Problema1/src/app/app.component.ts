@@ -3,9 +3,7 @@ import { TareaService } from './tarea.service'; // Importo el servicio para pode
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { NgModel } from '@angular/forms'; 
-
 @Component({ 
-
   selector: 'app-root',
   standalone: true, 
   templateUrl: './app.component.html',
@@ -16,15 +14,14 @@ import { NgModel } from '@angular/forms';
 export class AppComponent implements OnInit { 
   nuevaTarea: string = '';  // Variable para la nueva tarea
   tareas: string[] = [];  // Lista de tareas 
+  
   // Inyecto el servicio para utilizarlo  (aqui podria usar los servicios de Spring Boot por ejemplo )
     constructor(private tareaServicio : TareaService){} 
-
     // Para inicializar todo 
     ngOnInit(): void {
         // Obtengo las tareas del servicio 
         this.tareas = this.tareaServicio.obtenerTareas();    
     }
-
     agregarTarea():void{
       if(this.nuevaTarea) {
          this.tareaServicio.agregarTarea(this.nuevaTarea);  
