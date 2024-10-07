@@ -1,27 +1,92 @@
-# AngularProblema2
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.6.
+## 2 -Proyecto de Conversión de Divisas
+Este es un proyecto de conversión de divisas desarrollado con Angular. Permite a los usuarios convertir una cantidad de una moneda a otra utilizando tasas de cambio obtenidas de una API externa.
+## Funcionalidades
+- Conversión de monedas en tiempo real. 
+- Soporte para múltiples monedas.
+- Interfaz de usuario amigable.
+- Modo oscuro y claro.
 
-## Development server
+## Tecnologías Utilizadas
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Angular](https://angular.io/) - Framework para construir aplicaciones web.
+- [RxJS](https://rxjs.dev/) - Biblioteca para programación reactiva.
+- [HttpClient](https://angular.io/api/common/http/HttpClient) - Módulo para hacer peticiones HTTP. 
+- [API](https://api.exchangerate-api.com/v4/latest/) -API Conversion de divisas.
 
-## Code scaffolding
+## Creaccion de Componente Service
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+1. Primero como principio cree un servicio con el comando :`ng generate service` 
+2. Ya obtenido creado en el proyecto `divisa.service.ts` creamos la URL y en el constructor utilizamos el modulo `HttpClient`
+esta se encargara de hacer la peticion `GET` a la API 
 
-## Build
+```typescript
+private apiUrl = 'https://api.exchangerate-api.com/v4/latest/';
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+constructor(private http: HttpClient) {} // Aquí creo un módulo HttpClient
 
-## Running unit tests
+// Este método va a pedir una base de tipo string y retornará un Observable.
+getRates(baseCurrency: string): Observable<any> {
+  return this.http.get(`${this.apiUrl}${baseCurrency}`);
+} 
+```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+### Configuracion Prividers  
+Configuracion para configurar el componente app que utilizara un `HttpClient` en el archivo 
+`app.config.ts` del componente . 
 
-## Running end-to-end tests
+```typescript 
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import { provideRouter } from '@angular/router';
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+import { routes } from './app.routes';
+import { provideHttpClient } from '@angular/common/http';
 
-## Further help
+export const appConfig: ApplicationConfig = {
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),
+    provideHttpClient() //Para utilizacion de HttpClient
+  ] 
+};
+```
+### Importamos los Modulos  
+Para poder ser renderizado en el root
+```typescript 
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { FormsModule } from '@angular/forms'; 
+import { CommonModule } from '@angular/common';  // Esto sirve para agregar @if , @for en este caso los if ternarios darkmode
+import { DivisaService } from './divisa.service'; 
+@Component({
+  selector: 'app-root',
+  standalone: true,
+  imports: [RouterOutlet, CommonModule, FormsModule],   // Importamos los CommondModule y FormsModule
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
+})
+``` 
+## Logica del Negocio 
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+```typescript 
+export class AppComponent {
+  ...
+  getRates() { 
+    // :'https://api.exchangerate-api.com/v4/latest/USD )
+    this.divisa.getRates( this.fromCurrency ).subscribe((data) => {
+      this.rates = data.rates;  // Obtengo todos al principio tomara  los rates USD
+      this.convertCurrency(); // Hara la conversion de lo que tenga abajo (Defaiult : EUR)
+    });
+  }
+  convertCurrency() {
+    if (this.rates && this.rates[this.toCurrency]) { // this.rates["EUR"] obtengo el rate de la api solo osea solo  el EUR
+      this.result = this.amount * this.rates[this.toCurrency]; // 1 USD * 0.911
+    }
+  } 
+  // Seteara los cambios
+  onCurrencyChange() {
+    this.getRates();  
+  }
+}
+``` 
+
+
+ 
